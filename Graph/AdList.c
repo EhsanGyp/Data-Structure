@@ -1,35 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node
-{
-	int Data;
-	struct Node * Next;
-}Node;
+#include "AdList.h"
 
-typedef struct
+AdList * initAdList()
 {
-	int Vertices;
-	Node ** l;
-}AdList;
-
-void initAdList(AdList *p)
-{
+    AdList *p = malloc(sizeof(AdList));
+    printf("Enter number of Vertices: \n");
+    scanf("%d", &(p->Vertices));
 	p->l = (Node **)malloc((p->Vertices) * sizeof(Node *));
 	for(int i = 0; i < p->Vertices; i++)
 		p->l[i] = NULL;	
+    return p;
 }
 
-void addToList(AdList *p)
+void addToAdList(AdList *p)
 {
 	for(int i = 0; i < p->Vertices; i++)
 	{
 		int value = 0;
-		Node * head = NULL;
-		Node * tail = NULL;
+
+		Node * head = malloc(sizeof(Node));
+        head->Data = i;
+        head->Next = NULL;
+		Node * tail = head;
+
 		do
 		{
-			printf("Enter Adjucent Node (enter -1 to stop): \n");
+			printf("Enter Adjucent Node for vertice %d (enter -1 to stop): \n",i);
 			scanf("%d", &value);
 		
 			if(value == -1)
@@ -38,20 +36,44 @@ void addToList(AdList *p)
 			Node * newNode = malloc(sizeof(Node));
 			newNode->Data = value;
 			newNode->Next = NULL;
-		if(head == NULL)
-		{
-			head = newNode;
-			tail = newNode;
-		}
-		else
-		{
-			tail->Next = newNode;
-			tail = newNode;
-		}
 
-		}while(value != -1);
+            tail->Next = newNode;
+            tail = newNode;
 
-		p->l[i] = head;
+        }while(value != -1);
+
+        p->l[i] = head;
 	}
 }
 
+void displayAdList(AdList *p)
+{
+    for(int i = 0; i < p->Vertices; i++)
+    {
+        Node * head = p->l[i];
+        while(head)
+        {
+            printf("%d ", head->Data);
+            if(head->Next)
+                printf("-> ");
+            head = head->Next;
+        }
+        printf("\n");
+    } 
+}
+
+void freeAdList(AdList *p)
+{
+    for(int i = 0; i < p->Vertices; i++)
+    {
+        Node * current = p->l[i];
+        while(current)
+        {
+            Node * temp = current;
+            current = current->Next;
+            free(temp);
+        }
+    }
+    free(p->l);
+    free(p);
+}

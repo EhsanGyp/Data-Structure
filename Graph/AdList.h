@@ -1,5 +1,21 @@
-typedef struct Node
-typedef struct
+#ifndef ADLIST_H
+#define ADLIST_H
 
-void initAdList(AdList *p)
-void addToList(AdList *p)
+typedef struct Node
+{
+    int Data;
+    struct Node * Next;
+} Node;
+
+typedef struct
+{
+    int Vertices;
+    Node ** l;
+} AdList;
+
+AdList * initAdList();
+void addToAdList(AdList *p);
+void displayAdList(AdList *p);
+void freeAdList(AdList *p);
+
+#endif

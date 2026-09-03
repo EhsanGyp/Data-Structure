@@ -1,17 +1,15 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
-struct Node 
-{
-    int data;
-    struct Node *next;
-};
-struct Node *front = NULL;
-struct Node *rear = NULL;
+#include "Queue.h"
 
-void enqueue(int x)
+QNode * front = NULL;
+QNode * rear = NULL;
+
+void Qenqueue(int x)
 {
-    struct Node *t = (struct Node *)malloc(sizeof(struct Node));
+    QNode * t = malloc(sizeof(QNode));
     if(t == NULL)
     {
         printf("Queue is full");
@@ -31,7 +29,7 @@ void enqueue(int x)
     }
 }
 
-int dequeue()
+int Qdequeue()
 {
     int x = -1;
     if(front == NULL)
@@ -41,7 +39,7 @@ int dequeue()
     }
     else
     {
-        struct Node *p = front;
+        QNode * p = front;
         front = front->next;
         x = p->data;
         free(p);
@@ -51,18 +49,23 @@ int dequeue()
     return x;
 }
 
-void display()
+void Qdisplay()
 {
     if(front == NULL)
     {
         printf("Queue Empty.");
         return;
     }
-    struct Node *p = front;
+    QNode * p = front;
     while(p)
     {
         printf("%d ",p->data);
         p = p->next;
     }
     printf("\n");
+}
+
+bool QisEmpty()
+{
+    return front == NULL;
 }
