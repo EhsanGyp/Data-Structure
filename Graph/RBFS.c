@@ -4,7 +4,32 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void BreadFirstSearch(AdList *p, int start)
+void BFSrecurse(AdList * p, bool * Visited)
+{
+    if(QisEmpty())
+        return;
+
+    int CurrentRow = Qdequeue();
+    printf("%d ,", CurrentRow);
+
+    Node * Head = p->l[CurrentRow];
+    while(Head)
+    {
+        int Neighbor = Head->Data;
+        if(!Visited[Neighbor])
+        {
+            Visited[Neighbor] = 1;
+            Qenqueue(Neighbor);
+        }
+
+        Head = Head->Next;
+
+    }
+
+    BFSrecurse(p, Visited);
+}
+
+void RBFS(AdList *p, int start)
 {
     bool * Visited = calloc(p->Vertices, sizeof(bool));
     if(Visited == NULL)
@@ -16,24 +41,9 @@ void BreadFirstSearch(AdList *p, int start)
     Visited[start] = 1;
     Qenqueue(start);
     
-    while(!QisEmpty())
-    {
-        int CurrentRow = Qdequeue();
-        printf("%d ,", CurrentRow);
+    BFSrecurse(p, Visited);
 
-        Node * Head = p->l[CurrentRow];
-        while(Head)
-        {
-            int Neighbor = Head->Data;
-            if(!Visited[Neighbor])
-            {
-                Visited[Neighbor] = 1;
-                Qenqueue(Neighbor);
-            }
-
-            Head = Head->Next;
-        }
-    }
+    free(Visited);
 }
 
 int main()
@@ -46,7 +56,7 @@ int main()
     printf("Which vertice would you like to start with?(0 to %d): \n", (List->Vertices - 1));
     scanf("%d", & start);
     
-    BreadFirstSearch(List, start);
+    RBFS(List, start);
 
     return 0;
 }
